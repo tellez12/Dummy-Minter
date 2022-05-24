@@ -12,6 +12,11 @@ function App() {
   const { authenticate, isAuthenticated, logout, user } = useMoralis();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+
+  const [reciever, setReciever] = useState("");
+  const [beneficiary, setBeneficiary] = useState(0);
+  const [feeNumerator, setFeeNumerator] = useState(0);
+
   const [file, setFile] = useState(null);
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -36,7 +41,7 @@ function App() {
       const contract = new web3.eth.Contract(contractABI, contractAddress);
       let address = "0xb4d2Ba416F6343B03220C2dFbE3492005336026b";
       const response = await contract.methods
-        .mint( address, address, 1000, metadataurl)
+        .mint( reciever, beneficiary, feeNumerator, metadataurl)
         .send({ from: user.get("ethAddress") });
       // Get token id
       const tokenId = response.events.Transfer.returnValues.tokenId;
@@ -86,6 +91,34 @@ function App() {
             value={description}
             placeholder="Description"
             onChange={(e) => setDescription(e.target.value)}
+          />
+        </div>
+        <div className="">
+          <input
+            type="text"
+            className=""
+            value={reciever}
+            placeholder="NFT reciever"
+            onChange={(e) => setReciever(e.target.value)}
+          />
+        </div>
+
+        <div className="">
+          <input
+            type="text"
+            className=""
+            value={beneficiary}
+            placeholder="Fee beneficiary"
+            onChange={(e) => setBeneficiary(e.target.value)}
+          />
+        </div>
+        <div className="">
+          <input
+            type="text"
+            className=""
+            value={feeNumerator}
+            placeholder="Fee Numerator "
+            onChange={(e) => setFeeNumerator(e.target.value)}
           />
         </div>
         <div className="">
